@@ -1,0 +1,426 @@
+/* Root theme variables */
+:root {
+  --bg: #f6f7fb;
+  --board-bg: #fff;
+  --column-bg: #f0f1f6;
+  --card-bg: #fff;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --text: #222;
+  --text-light: #666;
+  --border: #e5e7eb;
+  --error: #e11d48;
+  --modal-bg: rgba(0,0,0,0.35);
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.kanban-board-wrapper {
+  min-height: 100vh;
+  padding: 80px 0 0 0; /* add top padding for navbar */
+  box-sizing: border-box;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.kanban-column {
+  background: var(--column-bg);
+  border-radius: 12px;
+  padding: 16px 8px 32px 8px;
+  min-width: 260px;
+  flex: 1 1 0;
+  box-shadow: var(--shadow);
+  transition: background 0.2s;
+  min-height: 400px;
+}
+.kanban-column.drag-over {
+  background: #e0e7ff;
+  border: 2px dashed var(--primary);
+}
+
+.kanban-header {
+  margin-bottom: 16px;
+}
+.kanban-header button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.kanban-header button:hover {
+  background: var(--primary-dark);
+}
+
+.kanban-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 16px 14px 12px 14px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: grab;
+  position: relative;
+  min-height: 90px;
+  will-change: transform;
+}
+.task-card:hover, .task-card:focus {
+  box-shadow: 0 4px 16px rgba(59,130,246,0.12);
+  transform: translateY(-2px) scale(1.03);
+  z-index: 2;
+}
+.task-card.dragging {
+  box-shadow: 0 8px 32px rgba(59,130,246,0.18);
+  transform: scale(1.07) rotate(-2deg);
+  opacity: 0.85;
+  z-index: 10;
+  transition: box-shadow 0.2s, transform 0.2s, opacity 0.2s;
+}
+
+/* Card flip animation (for future use) */
+@keyframes card-flip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+.card-flip {
+  animation: card-flip 0.5s cubic-bezier(.4,2,.6,1) forwards;
+}
+
+.task-meta {
+  margin-top: 8px;
+  font-size: 0.95em;
+  color: var(--text-light);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.task-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+.task-actions button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 0.98em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.task-actions button:hover {
+  background: var(--primary-dark);
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--modal-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  max-width: 95vw;
+  animation: fadeIn 0.3s;
+}
+.modal h3 {
+  margin-top: 0;
+}
+.modal-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+  background: #f9fafb;
+  color: var(--text);
+  transition: border 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border: 1.5px solid var(--primary);
+  outline: none;
+}
+
+.error {
+  color: var(--error);
+  margin-top: 8px;
+  font-size: 0.98em;
+}
+
+.activity-log-panel {
+  background: var(--board-bg);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 18px 16px 10px 16px;
+  margin-top: 0;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Auth forms */
+.auth-container {
+  max-width: 350px;
+  margin: 60px auto;
+  background: var(--board-bg);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 32px 24px 24px 24px;
+}
+.auth-container h2 {
+  margin-top: 0;
+}
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.auth-container button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  font-size: 1em;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.auth-container button:hover {
+  background: var(--primary-dark);
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+  .kanban-board-wrapper {
+    flex-direction: column;
+    padding: 80px 0 0 0;
+  }
+  .kanban-board {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .kanban-activitylog {
+    min-width: 0;
+    margin-top: 24px;
+    width: 100%;
+  }
+  .navbar-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 8px;
+  }
+}
+@media (max-width: 600px) {
+  .kanban-board-wrapper {
+    padding: 70px 0 0 0;
+  }
+  .kanban-board {
+    gap: 8px;
+  }
+  .kanban-column {
+    min-width: 90vw;
+    padding: 10px 4px 20px 4px;
+  }
+  .modal {
+    min-width: 90vw;
+    padding: 18px 6px 12px 6px;
+  }
+  .auth-container {
+    max-width: 98vw;
+    padding: 18px 6px 12px 6px;
+  }
+  .navbar-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 4px;
+  }
+  .navbar-left, .navbar-right {
+    flex: unset;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .app-title {
+    margin-right: 12px;
+    font-size: 1.1em;
+  }
+  .navbar button {
+    padding: 8px 14px;
+    font-size: 0.98em;
+    margin-left: 8px;
+  }
+  .activity-log-panel {
+    max-height: 200px;
+    font-size: 0.95em;
+    padding: 6px;
+  }
+  .task-card {
+    min-height: 60px;
+    padding: 10px 6px 8px 6px;
+    font-size: 0.98em;
+  }
+}
+
+/* Light/dark theme support (default light) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #181a20;
+    --board-bg: #23262f;
+    --column-bg: #23262f;
+    --card-bg: #23262f;
+    --primary: #60a5fa;
+    --primary-dark: #2563eb;
+    --text: #f3f4f6;
+    --text-light: #a1a1aa;
+    --border: #2a2d3a;
+    --modal-bg: rgba(0,0,0,0.65);
+    --shadow: 0 2px 8px rgba(0,0,0,0.22);
+  }
+  .modal, .auth-container, .activity-log-panel {
+    background: #23262f;
+    color: #f3f4f6;
+  }
+  input, textarea, select {
+    background: #23262f;
+    color: #f3f4f6;
+    border: 1px solid #2a2d3a;
+  }
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+.global-loading-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-size: 1.2em;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  z-index: 1000;
+  background: linear-gradient(90deg, #181a20 80%, #23242a 100%);
+  color: #fff;
+  min-height: 56px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  border-bottom: 1px solid #23242a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.navbar-left, .navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navbar-left {
+  flex: 1;
+}
+
+.navbar-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.app-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-right: 24px;
+  color: #fff;
+}
+
+.navbar button {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: #3b82f6;
+  color: #fff;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(59,130,246,0.08);
+}
+
+.navbar button:hover {
+  background: #2563eb;
+}
+
+.navbar button:last-child {
+  background: #e11d48;
+  margin-left: 12px;
+} 
