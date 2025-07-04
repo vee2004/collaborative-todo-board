@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
 const priorities = ['Low', 'Medium', 'High'];
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default function KanbanBoard() {
   const { token, user, loading: authLoading, logout } = useAuth();
@@ -26,7 +27,7 @@ export default function KanbanBoard() {
   // Fetch users when modal opens
   useEffect(() => {
     if (showNewTask && token) {
-      fetch('/api/tasks/users', {
+      fetch(`${API_URL}/api/tasks/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -42,7 +43,7 @@ export default function KanbanBoard() {
   useEffect(() => {
     if (!token) return;
     setLoading(true);
-    fetch('/api/tasks', {
+    fetch(`${API_URL}/api/tasks`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -112,7 +113,7 @@ export default function KanbanBoard() {
     try {
       const body = { ...newTask };
       if (!body.assignedUser) delete body.assignedUser;
-      const res = await fetch('/api/tasks', {
+      const res = await fetch(`${API_URL}/api/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +164,7 @@ export default function KanbanBoard() {
     if (!task || task.status === colKey) return;
     // Update status in backend
     try {
-      const res = await fetch(`/api/tasks/${task._id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

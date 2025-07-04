@@ -7,10 +7,12 @@ export default function ActivityLog({ socket }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const fetchLogs = () => {
     if (!token) return;
     setLoading(true);
-    fetch('/api/logs', {
+    fetch(`${API_URL}/api/logs`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())

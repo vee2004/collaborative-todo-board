@@ -17,6 +17,8 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
   const [assigning, setAssigning] = useState(false);
   const [users, setUsers] = useState([]);
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   // Always reset editTask to the current task when opening the modal
   const openEditModal = () => {
     console.log('Opening edit modal for task:', task);
@@ -27,7 +29,7 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
   // Fetch users when modal opens
   useEffect(() => {
     if (showEdit && token) {
-      fetch('/api/tasks/users', {
+      fetch(`${API_URL}/api/tasks/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -53,7 +55,7 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
       }
       if (!body.assignedUser) delete body.assignedUser;
       console.log('Submitting edit:', body, 'with version:', task.version);
-      const res = await fetch(`/api/tasks/${task._id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
     if (!window.confirm('Delete this task?')) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/tasks/${task._id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -109,7 +111,7 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
     setAssigning(true);
     setEditError('');
     try {
-      const res = await fetch(`/api/tasks/${task._id}/smart-assign`, {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}/smart-assign`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -144,7 +146,7 @@ export default function TaskCard({ task, onTaskUpdate, onTaskDelete, draggable, 
       }
       if (!body.assignedUser) delete body.assignedUser;
       console.log('Resolving conflict with:', body, 'using version:', conflict.version);
-      const res = await fetch(`/api/tasks/${task._id}`, {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
