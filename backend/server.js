@@ -15,8 +15,13 @@ const server = http.createServer(app);
 // Connect to MongoDB
 connectDB();
 
+const allowedOrigins = [
+  'https://collaborative-todo-boards.vercel.app',
+  'http://localhost:3000'
+];
+
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // API Routes
@@ -28,7 +33,7 @@ app.use('/api/logs', logRoutes);
 const { Server } = require('socket.io');
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },
