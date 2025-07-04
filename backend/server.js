@@ -16,7 +16,7 @@ const server = http.createServer(app);
 connectDB();
 
 const allowedOrigins = [
-  'https://collaborative-todo-boards.vercel.app',
+  'https://collaborative-todo-board-2eaq.vercel.app',
   'http://localhost:3000'
 ];
 
